@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blog Title Generator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #89f7fe, #66a6ff);
+        background-size: cover;
+      }
+
+      .glass-container {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 20px;
+        padding: 40px;
+        width: 420px;
+        max-width: 90%;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        text-align: center;
+      }
+
+      h2 {
+        color: #fff;
+        margin-bottom: 20px;
+        font-size: 1.8em;
+      }
+
+      label {
+        color: #f0f0f0;
+        font-weight: bold;
+        display: block;
+        margin-top: 15px;
+        margin-bottom: 5px;
+        text-align: left;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        margin-bottom: 15px;
+        font-size: 1em;
+      }
+
+      /* Hide default file input */
+      input[type="file"] {
+        display: none;
+      }
+
+      /* Custom file upload button */
+      .file-label {
+        display: inline-block;
+        background: linear-gradient(90deg, #ff758c, #ff7eb3);
+        color: white;
+        padding: 10px 20px;
+        font-size: 1em;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.3s ease;
+        margin-bottom: 10px;
+      }
+
+      .file-label:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(90deg, #ff7eb3, #ff758c);
+      }
+
+      /* Selected file list */
+      .file-names {
+        margin-top: 5px;
+        color: #e0e0e0;
+        font-size: 0.9em;
+        text-align: left;
+        max-height: 60px;
+        overflow-y: auto;
+      }
+
+      /* Main submit button */
+      button {
+        background: linear-gradient(90deg, #6a11cb, #2575fc);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        font-size: 1em;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.3s ease;
+        width: 100%;
+        margin-top: 15px;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(90deg, #2575fc, #6a11cb);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glass-container">
+      <h2>Upload Images & Generate Blog Titles</h2>
+      <form
+        action="{{ url_for('generate') }}"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <label>Optional Topic:</label>
+        <input type="text" name="topic" placeholder="Enter topic" />
+
+        <label>Upload Images:</label>
+        <label class="file-label" for="images">Choose Files</label>
+        <input type="file" id="images" name="images" multiple required />
+        <div class="file-names" id="file-names">No files selected</div>
+
+        <button type="submit">Generate Titles</button>
+      </form>
+    </div>
+
+    <script>
+      const fileInput = document.getElementById("images");
+      const fileNamesDiv = document.getElementById("file-names");
+
+      fileInput.addEventListener("change", () => {
+        const files = Array.from(fileInput.files).map((f) => f.name);
+        fileNamesDiv.textContent = files.length
+          ? files.join(", ")
+          : "No files selected";
+      });
+    </script>
+  </body>
+</html>
