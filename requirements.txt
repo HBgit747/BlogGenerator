@@ -4,3 +4,10 @@ pyairtable>=1.3.0
 google-genai>=1.29.0
 python-wordpress-xmlrpc>=2.3
 colorama>=0.4.6
+sift-stack-py
+requests
+flask
+google-generativeai
+pyairtable
+python-dotenv
+python-wordpress-xmlrpc

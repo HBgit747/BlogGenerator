@@ -1,141 +1,203 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Blog Title Generator</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #89f7fe, #66a6ff);
-        background-size: cover;
-      }
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blog Title Generator</title>
 
-      .glass-container {
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 20px;
-        padding: 40px;
-        width: 420px;
-        max-width: 90%;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        text-align: center;
-      }
+  <!-- Roboto (thin) -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 
-      h2 {
-        color: #fff;
-        margin-bottom: 20px;
-        font-size: 1.8em;
-      }
+  <style>
+    /* ===== PAGE BACKGROUND ===== */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Courier New', monospace, 'Roboto', sans-serif;
+      font-weight: 300;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(-45deg, #e0e0e0, #8d8d8d, #000000, #4a4a4a);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+      color: #fff;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-      label {
-        color: #f0f0f0;
-        font-weight: bold;
-        display: block;
-        margin-top: 15px;
-        margin-bottom: 5px;
-        text-align: left;
-      }
+    /* ===== GLASS CONTAINER ===== */
+    .glass-container {
+      position: relative;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 28px;
+      width: 420px;
+      max-width: 92%;
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      /* Make inner content left-aligned so inputs aren't centered */
+      text-align: left;
+    }
 
-      input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        border-radius: 8px;
-        border: none;
-        outline: none;
-        margin-bottom: 15px;
-        font-size: 1em;
-      }
+    h2 {
+      margin: 0 0 18px;
+      font-size: 1.6rem;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+      text-align: center; /* only the heading is centered */
+    }
 
-      /* Hide default file input */
-      input[type="file"] {
-        display: none;
-      }
+    label {
+      font-weight: 300;
+      display: block;
+      margin: 14px 0 6px;
+    }
 
-      /* Custom file upload button */
-      .file-label {
-        display: inline-block;
-        background: linear-gradient(90deg, #ff758c, #ff7eb3);
-        color: white;
-        padding: 10px 20px;
-        font-size: 1em;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: transform 0.2s ease, background 0.3s ease;
-        margin-bottom: 10px;
-      }
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      margin-bottom: 10px;
+      font-size: 1rem;
+      resize: none;
+      font-family: inherit;
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      /* ensure text inside the fields is left-aligned */
+      text-align: left;
+    }
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(255, 255, 255, 0.65);
+    }
 
-      .file-label:hover {
-        transform: translateY(-2px);
-        background: linear-gradient(90deg, #ff7eb3, #ff758c);
-      }
+    /* ===== FILE UPLOAD ===== */
+    input[type="file"] { display: none; }
 
-      /* Selected file list */
-      .file-names {
-        margin-top: 5px;
-        color: #e0e0e0;
-        font-size: 0.9em;
-        text-align: left;
-        max-height: 60px;
-        overflow-y: auto;
-      }
+    .file-label {
+      display: inline-block;
+      padding: 10px 16px;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 1.5px solid #fff;
+      background: transparent;
+      color: #fff;
+      transition: all 0.25s ease;
+    }
+    .file-label:hover {
+      background: #fff;
+      color: #333;
+    }
 
-      /* Main submit button */
-      button {
-        background: linear-gradient(90deg, #6a11cb, #2575fc);
-        color: white;
-        border: none;
-        padding: 12px 25px;
-        font-size: 1em;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: transform 0.2s ease, background 0.3s ease;
-        width: 100%;
-        margin-top: 15px;
-      }
+    .file-names {
+      margin-top: 6px;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 0.92rem;
+      max-height: 64px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
 
-      button:hover {
-        transform: translateY(-2px);
-        background: linear-gradient(90deg, #2575fc, #6a11cb);
-      }
-    </style>
-  </head>
-  <body>
-    <div class="glass-container">
-      <h2>Upload Images & Generate Blog Titles</h2>
-      <form
-        action="{{ url_for('generate') }}"
-        method="post"
-        enctype="multipart/form-data"
-      >
-        <label>Optional Topic:</label>
-        <input type="text" name="topic" placeholder="Enter topic" />
+    /* ===== BUTTON ===== */
+    button {
+      border: 1.5px solid #fff;
+      background: transparent;
+      color: #fff;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 16px;
+      transition: all 0.25s ease;
+      font-family: inherit;
+    }
+    button:hover {
+      background: #fff;
+      color: #333;
+    }
 
-        <label>Upload Images:</label>
-        <label class="file-label" for="images">Choose Files</label>
-        <input type="file" id="images" name="images" multiple required />
-        <div class="file-names" id="file-names">No files selected</div>
+    /* ===== LOADING OVERLAY ===== */
+    #loading-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      border-radius: 20px;
+      z-index: 10;
+    }
+    .spinner {
+      border: 5px solid rgba(255, 255, 255, 0.2);
+      border-top: 5px solid #00d4ff;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text {
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+  </style>
+</head>
 
-        <button type="submit">Generate Titles</button>
-      </form>
+<body>
+  <div class="glass-container" id="form-container">
+    <div id="loading-overlay">
+      <div class="spinner"></div>
+      <div class="loading-text">Processing...</div>
     </div>
 
-    <script>
-      const fileInput = document.getElementById("images");
-      const fileNamesDiv = document.getElementById("file-names");
+    <h2>Generate Blog Titles</h2>
 
-      fileInput.addEventListener("change", () => {
-        const files = Array.from(fileInput.files).map((f) => f.name);
-        fileNamesDiv.textContent = files.length
-          ? files.join(", ")
-          : "No files selected";
-      });
-    </script>
-  </body>
+    <form action="{{ url_for('generate') }}" method="post" enctype="multipart/form-data" id="generate-form">
+      <label>Optional Topic:</label>
+      <input type="text" name="topic" placeholder="Enter topic" required />
+
+      <label>Optional Additional Context/Events:</label>
+      <textarea name="extra_context" placeholder="Add any extra details, events, or updates..." rows="3"></textarea>
+
+      <label>Upload Images:</label>
+      <label class="file-label" for="images">Choose Files</label>
+      <input type="file" id="images" name="images" multiple required />
+      <div class="file-names" id="file-names">No files selected</div>
+
+      <button type="submit">Generate Titles</button>
+    </form>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById("images");
+    const fileNamesDiv = document.getElementById("file-names");
+    const form = document.getElementById("generate-form");
+    const overlay = document.getElementById("loading-overlay");
+
+    fileInput.addEventListener("change", () => {
+      const files = Array.from(fileInput.files).map(f => f.name);
+      fileNamesDiv.textContent = files.length ? files.join(", ") : "No files selected";
+    });
+
+    form.addEventListener("submit", () => {
+      if (form.checkValidity()) {
+        overlay.style.display = "flex";
+      }
+    });
+  </script>
+</body>
 </html>
